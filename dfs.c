@@ -15,4 +15,6 @@ btree* make_node(int data, btree *lchild, btree *rchild) {
 }
 
 
-
+node* dfs(btree *root) {
+    return NULL;
+}

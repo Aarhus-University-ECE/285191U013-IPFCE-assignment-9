@@ -102,7 +102,13 @@ TEST_CASE("dfs") {
 //     (5, 16, 10, 6, 15, 13, 3, 4, 1, 9, 18, 2, 14, 19, 17, 20, 11, 7, 12,
     //     8)
     node *tree =
-        make_node(5, make_node(3, make_node(1, leaf(2), NULL), leaf(4)),
+        make_node(5,
+          make_node(3,
+            make_node(1,
+              leaf(2), 
+              NULL),
+            leaf(4)),
+                  
                   make_node(16, make_node(10, make_node(6, make, NULL)))
 
         )
