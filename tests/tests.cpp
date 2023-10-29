@@ -53,7 +53,7 @@ btree_node *leaf(int val) { return make_btree_node(val, NULL, NULL); }
 btree_node *left(int val, btree_node *l) { return make_btree_node(val, l, NULL); }
 btree_node *right(int val, btree_node *r) { return make_btree_node(val, NULL, r); }
 
-TEST_CASE("dfs", "[dfs]") {
+TEST_CASE("dfs-from-exercise", "[dfs]") {
 
   {
     btree_node *tree = make_btree_node(4,
@@ -93,7 +93,7 @@ TEST_CASE("dfs", "[dfs]") {
 }
 
 
-TEST_CASE("balanced-tree", "[dfs]") {
+TEST_CASE("dfs-balanced-tree", "[dfs]") {
     btree_node *tree = make_btree_node(10,
                          left(5, leaf(2)),
                          right(15, leaf(20)));
@@ -116,7 +116,7 @@ TEST_CASE("balanced-tree", "[dfs]") {
     REQUIRE(p->data == 20); // right child of 15
 }
 
-TEST_CASE("left-leaning-tree", "[dfs]") {
+TEST_CASE("dfs-left-leaning-tree", "[dfs]") {
     btree_node *tree = make_btree_node(30,
                          left(20,
                              left(10, leaf(5))),
@@ -138,7 +138,7 @@ TEST_CASE("left-leaning-tree", "[dfs]") {
 }
 
 
-TEST_CASE("right-leaning-tree", "[dfs]") {
+TEST_CASE("dfs-right-leaning-tree", "[dfs]") {
     btree_node *tree = make_btree_node(40,
                          NULL,
                          right(50,
@@ -160,7 +160,7 @@ TEST_CASE("right-leaning-tree", "[dfs]") {
 }
 
 
-TEST_CASE("mixed-values", "[dfs]") {
+TEST_CASE("dfs-mixed-values", "[dfs]") {
     btree_node *tree = make_btree_node(1,
                          make_btree_node(-2,
                              left(3, leaf(-4)),
