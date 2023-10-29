@@ -14,17 +14,19 @@ btree_node* make_btree_node(int data, btree_node *lchild, btree_node *rchild) {
     return n;
 }
 
+void stack_push(stack* s , btree_node* n) {
 
-node* dfs(btree_node *root) {
-    return NULL;
 }
-
-void stack_push(stack* s , btree_node* n) {}
  
 bool stack_empty(const stack* s) { 
     return false;
 }
+
 btree_node* stack_pop(stack* s) {
     return NULL;
 }
 
+
+node* dfs(btree_node *root) {
+    return NULL;
+}
