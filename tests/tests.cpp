@@ -49,16 +49,16 @@ TEST_CASE("search") {
   }
 }
 
-node *leaf(int val) { return make_node(val, NULL, NULL); }
-node *left(int val, node *l) { return make_node(val, l, NULL); }
-node *right(int val, node *r) { return make_node(val, NULL, r); }
+node *leaf(int val) { return make_btree_node(val, NULL, NULL); }
+node *left(int val, node *l) { return make_btree_node(val, l, NULL); }
+node *right(int val, node *r) { return make_btree_node(val, NULL, r); }
 
 TEST_CASE("dfs") {
 
   {
-    node *tree = make_node(4,
-                           make_node(7, make_node(28, leaf(77), leaf(23)),
-                                     make_node(86, leaf(3), leaf(9))),
+    btree_node *tree = make_btree_node(4,
+                           make_btree_node(7, make_btree_node(28, leaf(77), leaf(23)),
+                                     make_btree_node(86, leaf(3), leaf(9))),
                            leaf(98));
     node* list = dfs(tree);
     REQUIRE(list != NULL);
@@ -101,16 +101,16 @@ TEST_CASE("dfs") {
     // #let data = \
 //     (5, 16, 10, 6, 15, 13, 3, 4, 1, 9, 18, 2, 14, 19, 17, 20, 11, 7, 12,
     //     8)
-    node *tree =
-        make_node(5,
-          make_node(3,
-            make_node(1,
-              leaf(2), 
-              NULL),
-            leaf(4)),
+    // node *tree =
+    //     make_node(5,
+    //       make_node(3,
+    //         make_node(1,
+    //           leaf(2), 
+    //           NULL),
+    //         leaf(4)),
                   
-                  make_node(16, make_node(10, make_node(6, make, NULL)))
+    //               make_node(16, make_node(10, make_node(6, make, NULL)))
 
-        )
+    //     )
   }
 }

@@ -26,7 +26,6 @@ btree_node* stack_pop(stack* s) {
     return NULL;
 }
 
-
 node* dfs(btree_node *root) {
     return NULL;
 }
