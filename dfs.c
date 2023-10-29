@@ -14,7 +14,7 @@ btree_node* make_btree_node(int data, btree_node *lchild, btree_node *rchild) {
     return n;
 }
 
-void stack_push(stack* s , btree_node* n) {
+void stack_push(stack* s, btree_node* n) {
 
 }
  

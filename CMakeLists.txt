@@ -28,6 +28,7 @@ foreach(lib ${libs})
 		PUBLIC
 		$<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-Wall -Wpedantic>
 	)
+	target_compile_options(${lib} PRIVATE -Wno-comment)
 endforeach()
 
 add_executable(unit-tests tests/tests.cpp)
