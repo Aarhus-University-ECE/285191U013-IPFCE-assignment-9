@@ -34,3 +34,5 @@ add_executable(unit-tests tests/tests.cpp)
 target_include_directories(unit-tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(unit-tests ${libs})
 target_link_libraries(unit-tests Catch2::Catch2WithMain)
+target_compile_options(unit-tests PRIVATE -Wno-comment)
+

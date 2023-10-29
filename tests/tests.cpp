@@ -15,12 +15,12 @@ TEST_CASE("sum") {
   const int len = sizeof(a) / sizeof(a[0]);
   REQUIRE(sum(a, 0) == 0);
   // Non-empty
-  REQUIRE(sum(a, 5) == 5);
+  REQUIRE(sum(a, len) == 5);
 
   {
     const int input[] {10, 9, 2, 11, 5, 12, 8, 3, 1, 4, 6, 7};
     const int len = sizeof(input) / sizeof(input[0]);
-    const int expected = 0;
+    int expected = 0;
     for (int i = 0; i < len; i++) {
       expected += input[i];
     }
@@ -49,11 +49,11 @@ TEST_CASE("search") {
   }
 }
 
-node *leaf(int val) { return make_btree_node(val, NULL, NULL); }
-node *left(int val, node *l) { return make_btree_node(val, l, NULL); }
-node *right(int val, node *r) { return make_btree_node(val, NULL, r); }
+btree_node *leaf(int val) { return make_btree_node(val, NULL, NULL); }
+btree_node *left(int val, btree_node *l) { return make_btree_node(val, l, NULL); }
+btree_node *right(int val, btree_node *r) { return make_btree_node(val, NULL, r); }
 
-TEST_CASE("dfs") {
+TEST_CASE("dfs", "[dfs]") {
 
   {
     btree_node *tree = make_btree_node(4,
@@ -90,27 +90,116 @@ TEST_CASE("dfs") {
     REQUIRE(p->data == 98); // ninth
   }
 
-  {
-    // 5
-    // 3 - 16
-    // 1 - 4 - 10 - 18
-    // 2 - 6 - 15 - 17 -19
-    // 9 - 13 - 20
-    // 7 - 11 - 14
-    // 8 - 12
-    // #let data = \
-//     (5, 16, 10, 6, 15, 13, 3, 4, 1, 9, 18, 2, 14, 19, 17, 20, 11, 7, 12,
-    //     8)
-    // node *tree =
-    //     make_node(5,
-    //       make_node(3,
-    //         make_node(1,
-    //           leaf(2), 
-    //           NULL),
-    //         leaf(4)),
-                  
-    //               make_node(16, make_node(10, make_node(6, make, NULL)))
+}
 
-    //     )
-  }
+
+TEST_CASE("balanced-tree", "[dfs]") {
+    btree_node *tree = make_btree_node(10,
+                         left(5, leaf(2)),
+                         right(15, leaf(20)));
+
+    node* list = dfs(tree);
+    REQUIRE(list != NULL);
+    node* p = list;
+    REQUIRE(p->data == 10); // root
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 5); // left child of root
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 2); // left child of 5
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 15); // right child of root
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 20); // right child of 15
+}
+
+TEST_CASE("left-leaning-tree", "[dfs]") {
+    btree_node *tree = make_btree_node(30,
+                         left(20,
+                             left(10, leaf(5))),
+                         NULL);
+
+    node* list = dfs(tree);
+    REQUIRE(list != NULL);
+    node* p = list;
+    REQUIRE(p->data == 30); // root
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 20); // left child of root
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 10); // left child of 20
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 5); // left child of 10
+}
+
+
+TEST_CASE("right-leaning-tree", "[dfs]") {
+    btree_node *tree = make_btree_node(40,
+                         NULL,
+                         right(50,
+                             right(60, leaf(70))));
+
+    node* list = dfs(tree);
+    REQUIRE(list != NULL);
+    node* p = list;
+    REQUIRE(p->data == 40); // root
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 50); // right child of root
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 60); // right child of 50
+    REQUIRE(p->next != NULL);
+    p = p->next;
+    REQUIRE(p->data == 70); // right child of 60
+}
+
+
+TEST_CASE("mixed-values", "[dfs]") {
+    btree_node *tree = make_btree_node(1,
+                         make_btree_node(-2,
+                             left(3, leaf(-4)),
+                             right(5, left(-6, leaf(7)))
+                         ),
+                         right(8,
+                             left(-9,
+                                  right(10, left(-11, leaf(12))))
+                         )
+                      );
+
+    node* list = dfs(tree);
+    REQUIRE(list != NULL);
+    node* p = list;
+    
+    REQUIRE(p->data == 1);  // root
+    p = p->next;
+    REQUIRE(p->data == -2); // left child of root
+    p = p->next;
+    REQUIRE(p->data == 3);  // left child of -2
+    p = p->next;
+    REQUIRE(p->data == -4); // left child of 3
+    p = p->next;
+    REQUIRE(p->data == 5);  // right child of -2
+    p = p->next;
+    REQUIRE(p->data == -6); // left child of 5
+    p = p->next;
+    REQUIRE(p->data == 7);  // left child of -6
+    p = p->next;
+    REQUIRE(p->data == 8);  // right child of root
+    p = p->next;
+    REQUIRE(p->data == -9); // left child of 8
+    p = p->next;
+    REQUIRE(p->data == 10); // right child of -9
+    p = p->next;
+    REQUIRE(p->data == -11);// left child of 10
+    p = p->next;
+    REQUIRE(p->data == 12); // left child of -11
+    p = p->next;
+
+    REQUIRE(p == NULL); // Ensure there are no more nodes
 }
